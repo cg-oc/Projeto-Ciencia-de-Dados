@@ -7,7 +7,7 @@ class Arquipelago:
         self.rodovias: list = []
         self.grafo: dict = {}
     
-    def get_conexoes(self):
+    def pega_conexoes(self):
         for _ in range(self.n_conexoes):
             conexao: list = input("Conexão: ").strip().split(" ")
             if conexao[-1] == "1":
@@ -15,6 +15,16 @@ class Arquipelago:
                 add_conexao(self.grafo, *conexao)
             else: # conexao = 2 = rodovia
                 self.rodovias.append(conexao)
+    
+    def pega_ponta(self) -> int | None:
+        """
+        Retorna vertice que está na ponta e ainda não foi visitado. 
+        Caso não haja, retorna `None`.
+        """
+        for vertice in self.grafo:
+            if vertice not in self.visitados:
+                return vertice
+        return None
 
 def add_conexao(grafo: dict, v1: int, v2: int, tipo_de_via: int):
     if grafo.get(v1, []):

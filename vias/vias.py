@@ -1,27 +1,15 @@
 # 1 -> hidrovia
 # grafo não direcional
 # não necessariamente há caminho entre a e b
-from funcoes_acessorias import constroi_grafo
+from funcoes_acessorias import Arquipelago
 def main():
     # Input inicial
     ilhas, n_conexoes, anos = map(int, input("Ilhas, n_conexoes, anos: ").split(" "))
 
-    grafo = constroi_grafo(n_conexoes)
-    if navega_vertices(grafo, anos):
-        print("S")
-    else:
-        print("N")
+    arquipelago = Arquipelago(ilhas, n_conexoes, anos)
+    arquipelago.pega_conexoes()
 
-def busca_ponta(grafo: dict, vertices_visitados: list) -> str | None:
-    """
-    Retorna vertice que está na ponta e ainda não foi visitado. 
-    Caso não haja, retorna `None`.
-    """
-    for vertice in grafo:
-        if vertice not in vertices_visitados:
-            return vertice
-            
-    return None
+
 
 def navega_vertices(grafo: dict, anos: int) -> bool:
     """
