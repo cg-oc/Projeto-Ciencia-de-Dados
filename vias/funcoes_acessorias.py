@@ -3,7 +3,6 @@ class Arquipelago:
         self.n_ilhas: int = n_ilhas
         self.n_conexoes: int = n_conexoes
         self.anos: int = anos
-        self.visitados: list = []
         self.rodovias: list = []
         self.grafo: dict = {}
     
@@ -16,17 +15,36 @@ class Arquipelago:
             else: # conexao = 2 = rodovia
                 self.rodovias.append(conexao)
     
-    def pega_ponta(self) -> int | None:
+    def pega_ponta(self, visitados: list) -> int | None:
         """
         Retorna vertice que está na ponta e ainda não foi visitado. 
         Caso não haja, retorna `None`.
         """
         for vertice in self.grafo:
-            if vertice not in self.visitados:
+            if vertice not in visitados:
                 return vertice
         return None
 
-def add_conexao(grafo: dict, v1: int, v2: int, tipo_de_via: int):
+    def tem_loop(self, conexao_add=None) -> bool:
+        """
+        Verifica se há loop no grafo atual do arquipélago.
+        """
+        # após add rodovia, devo priorizar a busca nos vertices conectados a fim de otimizar 
+        visitados: list = []
+
+        while ponta:= self.pega_ponta(visitados):
+            visitados.append(ponta)
+            a_visitar: list = [vizinho for vizinho in self.grafo[ponta]]
+
+            while a_visitar:
+                vertice_atual = a_visitar.pop() # pega ultimo adicionado
+                if vertice_atual not in visitados:
+                    visitados.append(vertice_atual)
+                else:
+                    return True
+        return False
+
+def add_conexao(grafo: dict, v1: int, v2: int, tipo_de_via: int): #type: ignore
     if grafo.get(v1, []):
         grafo[v1].update({v2: int(tipo_de_via)})
     else:
