@@ -11,11 +11,11 @@ class Arquipelago:
             conexao: list = input("Conexão: ").strip().split(" ")
             if conexao[-1] == "1":
                 conexao = list(map(int, conexao))
-                add_conexao(self.grafo, *conexao)
+                self.adiciona_conexao(*conexao)
             else: # conexao = 2 = rodovia
                 self.rodovias.append(conexao)
     
-    def pega_ponta(self, visitados: list) -> int | None:
+    def pega_ponta(self, visitados: set) -> int | None:
         """
         Retorna vertice que está na ponta e ainda não foi visitado. 
         Caso não haja, retorna `None`.
@@ -25,35 +25,51 @@ class Arquipelago:
                 return vertice
         return None
 
-    def tem_loop(self, conexao_add=None) -> bool:
+    def tem_loop(self) -> bool:
         """
         Verifica se há loop no grafo atual do arquipélago.
         """
         # após add rodovia, devo priorizar a busca nos vertices conectados a fim de otimizar 
-        visitados: list = []
+        visitados = set()
 
         while ponta:= self.pega_ponta(visitados):
-            visitados.append(ponta)
-            a_visitar: list = [vizinho for vizinho in self.grafo[ponta]]
-
+            # vertice cauda, vertice cabeca
+            a_visitar: list[tuple] = [(None, ponta)]
+            
             while a_visitar:
-                vertice_atual = a_visitar.pop() # pega ultimo adicionado
-                if vertice_atual not in visitados:
-                    visitados.append(vertice_atual)
-                else:
-                    return True
+
+                cauda, cabeca = a_visitar.pop() # pega ultimo adicionado
+                visitados.add(cabeca)
+
+                for vizinho in self.grafo[cabeca]:
+                    if vizinho == cauda:
+                        continue
+                    elif vizinho not in visitados:
+                        a_visitar.append((cabeca, vizinho)) #type: ignore
+                    else:
+                        return True
         return False
+    def adiciona_conexao(self, v1: int, v2: int, tipo_de_via: int) -> None:
+        if self.grafo.get(v1, []):
+            self.grafo[v1].update({v2: tipo_de_via})
+        else:
+            self.grafo[v1] = {v2: tipo_de_via}
 
-def add_conexao(grafo: dict, v1: int, v2: int, tipo_de_via: int): #type: ignore
-    if grafo.get(v1, []):
-        grafo[v1].update({v2: int(tipo_de_via)})
-    else:
-        grafo[v1] = {v2: int(tipo_de_via)}
+        if self.grafo.get(v2, []):
+            self.grafo[v2].update({v1: tipo_de_via})
+        else:
+            self.grafo[v2] = {v1: tipo_de_via}
 
-    if grafo.get(v2, []):
-        grafo[v2].update({v1: int(tipo_de_via)})
-    else:
-        grafo[v2] = {v1: int(tipo_de_via)}
-    return grafo
+# def add_conexao(grafo: dict, v1: int, v2: int, tipo_de_via: int): #type: ignore
+#     if grafo.get(v1, []):
+#         grafo[v1].update({v2: int(tipo_de_via)})
+#     else:
+#         grafo[v1] = {v2: int(tipo_de_via)}
+
+#     if grafo.get(v2, []):
+#         grafo[v2].update({v1: int(tipo_de_via)})
+#     else:
+#         grafo[v2] = {v1: int(tipo_de_via)}
+#     return grafo
         
 
