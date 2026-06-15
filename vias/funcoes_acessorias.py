@@ -1,31 +1,34 @@
+import matplotlib.pyplot as plt
+import time
+from networkx import Graph, draw
+
 class Arquipelago:
     def __init__(self, n_ilhas: int, n_conexoes: int, anos: int):
         self.n_ilhas: int = n_ilhas
         self.n_conexoes: int = n_conexoes
         self.anos: int = anos
         self.rodovias: set[tuple] = set() # preciso mudar para set[tuple]
-        self.grafo: dict = {}
+        self.grafo: dict[set] = {}
         self.n_loops: int = 0
     
     def pega_conexoes(self):
         """
-        Pede ao usuário as conexões do arquiélago e as armazena no objeto `Arquipelago`. Rodovias são salvas
+        Pede ao usuário as conexões do arquipélago e as armazena no objeto `Arquipelago`. Rodovias são salvas
         em set exclusivo `self.rodovias` para serem verificadas uma a uma posteriormente.
         """
         for _ in range(self.n_conexoes):
             input_de_via: list = input("Conexão: ").strip().split(" ") #type: ignore
+            v1, v2, _ = map(int, input_de_via)
 
             if input_de_via[-1] == "1":
-                conexao: tuple = tuple(map(int, input_de_via)) # conexao deveria ser um tuple?
-                self.adiciona_conexao(*conexao)
+                self.adiciona_conexao(v1, v2)
 
             else: # conexao = 2 = rodovia
-                self.rodovias.add(tuple(input_de_via))
+                self.rodovias.add((v1, v2))
     
     def pega_ponta(self, visitados: set) -> int | None:
         """
-        Retorna vertice que está na ponta e ainda não foi visitado. 
-        Caso não haja, retorna `None`.
+        Retorna vertice que está na ponta e ainda não foi visitado. Caso não haja, retorna `None`.
         """
         for vertice in self.grafo:
             if vertice not in visitados:
@@ -56,24 +59,28 @@ class Arquipelago:
                     else:
                         return True
         return False
-    def adiciona_conexao(self, v1: int, v2: int, tipo_de_via: int) -> None:
+
+    def adiciona_conexao(self, v1: int, v2: int) -> None:
         """
         Pega os dados da conexão fornecida e a introduz ao arquipélago.
         """
         if self.grafo.get(v1, []):
-            self.grafo[v1].update({v2: tipo_de_via})
+            self.grafo[v1].add(v2)
         else:
-            self.grafo[v1] = {v2: tipo_de_via}
+            self.grafo[v1]: set = {v2}
 
         if self.grafo.get(v2, []):
-            self.grafo[v2].update({v1: tipo_de_via})
+            self.grafo[v2].add(v1)
         else:
-            self.grafo[v2] = {v1: tipo_de_via}
-    
+            self.grafo[v2]: set = {v1}
+
+        mostra_grafo(self.grafo)
+
     def checa_loop_de_rodovias(self) -> bool:
         for rodovia in self.rodovias:
             self.adiciona_conexao(*rodovia)
-            
+            mostra_grafo(self.grafo)
+
             if not self.tem_loop():
                 continue # rodovia é mantida
             
@@ -95,3 +102,10 @@ class Arquipelago:
         else:
             # agora checa uma rodovia por vez
             return self.checa_loop_de_rodovias()
+
+def mostra_grafo(grafo: dict) -> None:
+    g = Graph(grafo)
+    draw(g, with_labels=True)    
+    plt.savefig("meu_grafo.png", format="PNG", dpi=300, bbox_inches="tight")
+    plt.close()
+    time.sleep(3)
