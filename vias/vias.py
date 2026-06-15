@@ -1,22 +1,23 @@
-# 1 -> hidrovia
-# grafo não direcional
-# não necessariamente há caminho entre a e b
 from funcoes_acessorias import Arquipelago
 def main():
     # Input inicial
     ilhas, n_conexoes, anos = map(int, input("Ilhas, n_conexoes, anos: ").split(" "))
 
     arquipelago = Arquipelago(ilhas, n_conexoes, anos)
+    # carrega dados do arquipelago
     arquipelago.pega_conexoes()
+    if arquipelago.era_simples():
+        print("S")
+    else:
+        print("N")
 
 
-
+"""
 def navega_vertices(grafo: dict, anos: int) -> bool:
-    """
     Busca um vértice ainda não visitado e então navega pelos vizinhos atrás de loops.
     Caso haja um loop de hidrovia, ou mais loops de rodovia do que K anos, retorna `False`.
     Senão, retorna `True`.
-    """
+
     vertices_visitados: list = []
     contador: int = 0  
 
@@ -37,6 +38,6 @@ def navega_vertices(grafo: dict, anos: int) -> bool:
                     vertices_para_visitar.append(vizinho)
 
     return True
-
+"""
 if __name__ == "__main__":
     main()
