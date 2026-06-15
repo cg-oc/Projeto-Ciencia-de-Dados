@@ -3,22 +3,24 @@ class Arquipelago:
         self.n_ilhas: int = n_ilhas
         self.n_conexoes: int = n_conexoes
         self.anos: int = anos
-        self.rodovias: list[list] = [] # preciso mudar para set[tuple]
+        self.rodovias: set[tuple] = set() # preciso mudar para set[tuple]
         self.grafo: dict = {}
         self.n_loops: int = 0
     
     def pega_conexoes(self):
         """
         Pede ao usuário as conexões do arquiélago e as armazena no objeto `Arquipelago`. Rodovias são salvas
-        em lista exclusiva `self.rodovias` para serem verificadas uma a uma posteriormente.
+        em set exclusivo `self.rodovias` para serem verificadas uma a uma posteriormente.
         """
         for _ in range(self.n_conexoes):
-            conexao: list = input("Conexão: ").strip().split(" ")
-            if conexao[-1] == "1":
-                conexao = list(map(int, conexao)) # conexao deveria ser um tuple?
+            input_de_via: list = input("Conexão: ").strip().split(" ") #type: ignore
+
+            if input_de_via[-1] == "1":
+                conexao: tuple = tuple(map(int, input_de_via)) # conexao deveria ser um tuple?
                 self.adiciona_conexao(*conexao)
+
             else: # conexao = 2 = rodovia
-                self.rodovias.append(conexao)
+                self.rodovias.add(tuple(input_de_via))
     
     def pega_ponta(self, visitados: set) -> int | None:
         """
@@ -93,20 +95,3 @@ class Arquipelago:
         else:
             # agora checa uma rodovia por vez
             return self.checa_loop_de_rodovias()
-
-
-# def add_conexao(grafo: dict, v1: int, v2: int, tipo_de_via: int): #type: ignore
-#     if grafo.get(v1, []):
-#         grafo[v1].update({v2: int(tipo_de_via)})
-#     else:
-#         grafo[v1] = {v2: int(tipo_de_via)}
-
-#     if grafo.get(v2, []):
-#         grafo[v2].update({v1: int(tipo_de_via)})
-#     else:
-#         grafo[v2] = {v1: int(tipo_de_via)}
-#     return grafo
-        
- 
-# Criados novo método era_simples() que chama outros métodos para primeiro veririficar se há loops apenas de hidrovia. Depois, adiciona uma rodovia por vez e verifica se há novo loop gerado enquanto o número deles não superar os anos do período.
-# Script principal vias.py adaptado para novos métodos da lógica OOP com objeto arquipélago.
