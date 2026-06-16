@@ -1,3 +1,4 @@
+from sys import exit
 import matplotlib.pyplot as plt
 from networkx import Graph, draw
 
@@ -6,7 +7,7 @@ class Arquipelago:
         self.n_conexoes: int = n_conexoes
         self.anos: int = anos
         self.rodovias: set[tuple] = set()
-        self.grafo: dict[set, int] = {}
+        self.grafo: dict[set, str] = {}
         self.n_loops: int = 0
     
     def pega_conexoes(self) -> None:
@@ -16,16 +17,19 @@ class Arquipelago:
         """
         for _ in range(self.n_conexoes):
             input_de_via: list = input("vértice 1, vértice 2, tipo de via: ").strip().split(" ") 
-            v1, v2, _ = map(int, input_de_via)
-
-            if input_de_via[-1] == "1": # conexao = 1 = hidrovia
+            v1, v2, tipo_de_via = input_de_via
+            
+            if tipo_de_via == "h": # conexao = 1 = hidrovia
                 self.adiciona_conexao(v1, v2)
 
-            else: # conexao = 2 = rodovia
+            elif tipo_de_via == "r":
                 self.rodovias.add((v1, v2))
+            else: # conexao = 2 = rodovia
+                exit("Tipo de via incorreto! \"r\" ou \"h\"!")
+
         self.mostra_grafo("Somente hidrovias")
     
-    def pega_ponta(self, visitados: set[int]) -> int | None:
+    def pega_ponta(self, visitados: set[str]) -> str | None:
         """
         Retorna vertice que ainda não foi visitado. Caso não haja, retorna `None`.
         """
@@ -38,7 +42,7 @@ class Arquipelago:
         """
         Verifica se há loop no grafo atual do arquipélago.
         """
-        visitados: set[int] = set()
+        visitados: set[str] = set()
 
         while ponta:= self.pega_ponta(visitados):
             a_visitar: list[tuple] = [(None, ponta)] # (v_cauda, v_cabeca)
@@ -57,7 +61,7 @@ class Arquipelago:
                         return True
         return False
 
-    def adiciona_conexao(self, v1: int, v2: int) -> None:
+    def adiciona_conexao(self, v1: str, v2: str) -> None:
         """
         Pega os dados da conexão fornecida e a introduz ao arquipélago.
         """
@@ -71,7 +75,7 @@ class Arquipelago:
         else:
             self.grafo[v2]: set = {v1}
 
-    def remove_conexao(self, v1: int, v2: int) -> None:
+    def remove_conexao(self, v1: str, v2: str) -> None:
         self.grafo[v1].remove(v2)
         self.grafo[v2].remove(v1)
 
@@ -81,7 +85,7 @@ class Arquipelago:
         """
         for rodovia in self.rodovias:
             self.adiciona_conexao(*rodovia)
-            self.mostra_grafo(f"Adicionada a rodovia {rodovia}")
+            self.mostra_grafo(f"Adicionada a rodovia entre {rodovia[0]} e {rodovia[1]}")
 
             if not self.tem_loop():
                 continue # rodovia é mantida
@@ -91,7 +95,7 @@ class Arquipelago:
                 self.mostra_grafo(f"Loops de rodovia demais! Arquipélago não era simples", cor='red')
                 return False #arquipelago não era simples
             self.remove_conexao(*rodovia)
-            self.mostra_grafo(f"Removida a rodovia {rodovia}")
+            self.mostra_grafo(f"Removida a rodovia entre {rodovia[0]} e {rodovia[1]}")
         return True
 
     def era_simples(self) -> bool:
@@ -114,7 +118,7 @@ class Arquipelago:
         rodovias adicionadas até então.
         """
         g = Graph(self.grafo)
-        draw(g, with_labels=True)
+        draw(g, with_labels=True, node_color='skyblue')
         plt.figtext(0.5, 0.01, mensagem, wrap=True, horizontalalignment='center', fontsize=12, color=cor)
         plt.title(f"Anos: {self.anos}           Loops de rodovia: {self.n_loops}")
         plt.savefig("meu_grafo.png", format="PNG", dpi=300, bbox_inches="tight")
