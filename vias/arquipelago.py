@@ -1,12 +1,11 @@
 import matplotlib.pyplot as plt
-import time
 from networkx import Graph, draw
 
 class Arquipelago:
     def __init__(self,n_conexoes: int, anos: int):
         self.n_conexoes: int = n_conexoes
         self.anos: int = anos
-        self.rodovias: set[tuple] = set() # preciso mudar para set[tuple]
+        self.rodovias: set[tuple] = set()
         self.grafo: dict[set, int] = {}
         self.n_loops: int = 0
     
@@ -16,19 +15,19 @@ class Arquipelago:
         em set exclusivo `self.rodovias` para serem verificadas uma a uma posteriormente.
         """
         for _ in range(self.n_conexoes):
-            input_de_via: list = input("Conexão: ").strip().split(" ") #type: ignore
+            input_de_via: list = input("vértice 1, vértice 2, tipo de via: ").strip().split(" ") 
             v1, v2, _ = map(int, input_de_via)
 
-            if input_de_via[-1] == "1":
+            if input_de_via[-1] == "1": # conexao = 1 = hidrovia
                 self.adiciona_conexao(v1, v2)
 
             else: # conexao = 2 = rodovia
                 self.rodovias.add((v1, v2))
         self.mostra_grafo("Somente hidrovias")
     
-    def pega_ponta(self, visitados: set) -> int | None:
+    def pega_ponta(self, visitados: set[int]) -> int | None:
         """
-        Retorna vertice que está na ponta e ainda não foi visitado. Caso não haja, retorna `None`.
+        Retorna vertice que ainda não foi visitado. Caso não haja, retorna `None`.
         """
         for vertice in self.grafo:
             if vertice not in visitados:
@@ -39,23 +38,21 @@ class Arquipelago:
         """
         Verifica se há loop no grafo atual do arquipélago.
         """
-        # após add rodovia, devo priorizar a busca nos vertices conectados a fim de otimizar 
-        visitados = set()
+        visitados: set[int] = set()
 
         while ponta:= self.pega_ponta(visitados):
-            # vertice cauda, vertice cabeca
-            a_visitar: list[tuple] = [(None, ponta)]
+            a_visitar: list[tuple] = [(None, ponta)] # (v_cauda, v_cabeca)
             
             while a_visitar:
 
-                cauda, cabeca = a_visitar.pop() # pega ultimo adicionado
+                cauda, cabeca = a_visitar.pop() # pega ultimo vertice adicionado
                 visitados.add(cabeca)
 
                 for vizinho in self.grafo[cabeca]:
                     if vizinho == cauda:
                         continue
                     elif vizinho not in visitados:
-                        a_visitar.append((cabeca, vizinho)) #type: ignore
+                        a_visitar.append((cabeca, vizinho)) 
                     else:
                         return True
         return False
@@ -79,6 +76,9 @@ class Arquipelago:
         self.grafo[v2].remove(v1)
 
     def checa_loop_de_rodovias(self) -> bool:
+        """
+        Adiciona cada rodovia ao grafo, mas a cada rodovia adicionada, o grafo é verificado novamente
+        """
         for rodovia in self.rodovias:
             self.adiciona_conexao(*rodovia)
             self.mostra_grafo(f"Adicionada a rodovia {rodovia}")
@@ -115,25 +115,8 @@ class Arquipelago:
         """
         g = Graph(self.grafo)
         draw(g, with_labels=True)
-        if mensagem:
-            plt.figtext(0.5, 0.01, mensagem, wrap=True, horizontalalignment='center', fontsize=12, color=cor)
+        plt.figtext(0.5, 0.01, mensagem, wrap=True, horizontalalignment='center', fontsize=12, color=cor)
         plt.title(f"Anos: {self.anos}           Loops de rodovia: {self.n_loops}")
         plt.savefig("meu_grafo.png", format="PNG", dpi=300, bbox_inches="tight")
         plt.close()
-        # time.sleep(5)
         input("ENTER para continuar")
-
-
-# def mostra_grafo(grafo: dict, mensagem: str = "") -> None:
-#     g = Graph(grafo)
-#     draw(g, with_labels=True)
-    
-#     # Adiciona um texto na parte inferior centralizada
-#     # x=0.5 (centro horizontal), y=0.01 (bem próximo à borda inferior)
-#     if mensagem:
-#         plt.figtext(0.5, 0.01, mensagem, wrap=True, horizontalalignment='center', fontsize=12, color='red')
-#     plt.title(f"Anos: {}")
-#     plt.savefig("meu_grafo.png", format="PNG", dpi=300, bbox_inches="tight")
-#     plt.close()
-#     # time.sleep(5)
-#     input("ENTER para continuar")
