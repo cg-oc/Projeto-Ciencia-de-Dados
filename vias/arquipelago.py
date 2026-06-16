@@ -88,7 +88,7 @@ class Arquipelago:
             
             self.n_loops += 1 #tem loop
             if self.n_loops > self.anos: #verifica se nao cruzou o limite
-                self.mostra_grafo(f"Loops de rodovia demais! Arquipélago não é simples", cor='red')
+                self.mostra_grafo(f"Loops de rodovia demais! Arquipélago não era simples", cor='red')
                 return False #arquipelago não era simples
             self.remove_conexao(*rodovia)
             self.mostra_grafo(f"Removida a rodovia {rodovia}")
@@ -102,7 +102,7 @@ class Arquipelago:
         """
         # cehcando primeiro somente com hidrovias
         if self.tem_loop():
-            self.mostra_grafo(f"Loops de rodovia demais! Arquipélago não é simples", cor='red')            
+            self.mostra_grafo(f"Há um loop de hidrovia! Arquipélago não era simples", cor='red')            
             return False
         else:
             # agora checa uma rodovia por vez
