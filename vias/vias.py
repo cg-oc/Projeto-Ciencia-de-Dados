@@ -1,8 +1,15 @@
 from arquipelago import Arquipelago
+from sys import exit
 
 def main():
-    n_conexoes, anos = map(int, input("Número de conexões, anos: ").split(" "))
-
+    while True:
+        try:
+            n_conexoes, anos = map(int, input("Número de conexões, anos: ").split(" "))
+            break
+        except ValueError:
+            print("Input inválido!")
+        except KeyboardInterrupt:
+            exit("\nPrograma finalizado!")
     arquipelago = Arquipelago(n_conexoes, anos) # instancializa o objeto arquipelago
 
     arquipelago.pega_conexoes() # carrega dados do arquipelago

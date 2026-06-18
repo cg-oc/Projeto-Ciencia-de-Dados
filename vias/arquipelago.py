@@ -15,17 +15,25 @@ class Arquipelago:
         Pede ao usuário as conexões do arquipélago e as armazena no objeto `Arquipelago`. Rodovias são salvas
         em set exclusivo `self.rodovias` para serem verificadas uma a uma posteriormente.
         """
-        for _ in range(self.n_conexoes):
-            input_de_via: list = input("vértice 1, vértice 2, tipo de via: ").strip().split(" ") 
-            v1, v2, tipo_de_via = input_de_via
-            
-            if tipo_de_via == "h": # conexao = 1 = hidrovia
-                self.adiciona_conexao(v1, v2)
+        while True:
+            try:
+                for _ in range(self.n_conexoes):
+                    input_de_via: list = input("vértice 1, vértice 2, tipo de via: ").strip().split(" ") 
+                    v1, v2, tipo_de_via = input_de_via
+                    
+                    if tipo_de_via == "h": # conexao = 1 = hidrovia
+                        self.adiciona_conexao(v1, v2)
 
-            elif tipo_de_via == "r":
-                self.rodovias.add((v1, v2))
-            else: # conexao = 2 = rodovia
-                exit("Tipo de via incorreto! \"r\" ou \"h\"!")
+                    elif tipo_de_via == "r":
+                        self.rodovias.add((v1, v2))
+                    else: 
+                        raise ValueError
+                break
+
+            except ValueError:
+                print("Input inválido!")
+            except KeyboardInterrupt:
+                exit("\nPrograma finalizado!")
 
         self.mostra_grafo("Somente hidrovias")
     
@@ -120,7 +128,7 @@ class Arquipelago:
         g = Graph(self.grafo)
         draw(g, with_labels=True, node_color='skyblue')
         plt.figtext(0.5, 0.01, mensagem, wrap=True, horizontalalignment='center', fontsize=12, color=cor)
-        plt.title(f"Anos: {self.anos}           Loops de rodovia: {self.n_loops}")
+        plt.title(f"Anos: {self.anos}              Loops de rodovia encontrados: {self.n_loops}")
         plt.savefig("meu_grafo.png", format="PNG", dpi=300, bbox_inches="tight")
         plt.close()
         input("ENTER para continuar")
