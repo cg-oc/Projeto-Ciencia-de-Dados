@@ -3,11 +3,24 @@ import matplotlib.pyplot as plt
 from networkx import Graph, draw
 
 class Arquipelago:
-    def __init__(self,n_conexoes: int, anos: int):
+    """
+    Representa um arquipélago como grafos para verificar as conexões entre suas ilhas.
+
+    Permite verificar laços e adicionar conexões entre suas ilhas, mantendo salvo os dados do grafo
+    correspondente a cada alteração.
+
+    Attributes:
+        self.n_conexoes (int): Quantas conexões há entre linhas.
+        self.anos (int): Período de estudo do arquipélago.
+        self.rodovias (set[tuple]): Guarda os pares de ilhas conectadas por cada rodovia.
+        self.grafo (dict[str, set]): Dicionário que representa o grafo.
+        self.n_loops (int): Qunatos laços de rodovia já foram detectados.
+    """
+    def __init__(self, n_conexoes: int, anos: int):
         self.n_conexoes: int = n_conexoes
         self.anos: int = anos
         self.rodovias: set[tuple] = set()
-        self.grafo: dict[set, str] = {}
+        self.grafo: dict[str, set] = {}
         self.n_loops: int = 0
     
     def pega_conexoes(self) -> None:
@@ -26,7 +39,7 @@ class Arquipelago:
 
                     elif tipo_de_via == "r":
                         self.rodovias.add((v1, v2))
-                    elause: 
+                    else: 
                         raise ValueError
                 break
 
@@ -48,7 +61,8 @@ class Arquipelago:
 
     def tem_loop(self) -> bool:
         """
-        Verifica se há loop no grafo atual do arquipélago.
+        Verifica se há loop no grafo atual do arquipélago.\n
+        Saída: `True` se houver loop ou `False` caso contrário
         """
         visitados: set[str] = set()
 
@@ -87,9 +101,11 @@ class Arquipelago:
         self.grafo[v1].remove(v2)
         self.grafo[v2].remove(v1)
 
-    def checa_loop_de_rodovias(self) -> bool:
+    def tem_loop_de_rodovias(self) -> bool:
         """
-        Adiciona cada rodovia ao grafo, mas a cada rodovia adicionada, o grafo é verificado novamente
+        Adiciona uma rodovia por vez e busca por algum laço no grafo a cada adição. Se encontrar laço, 
+        aumenta a contagem de laços em 1.\n
+        Saída: Se a contagem for maior que Q anos, retorna `False`, senão, `True`.
         """
         for rodovia in self.rodovias:
             self.adiciona_conexao(*rodovia)
@@ -101,10 +117,12 @@ class Arquipelago:
             self.n_loops += 1 #tem loop
             if self.n_loops > self.anos: #verifica se nao cruzou o limite
                 self.mostra_grafo(f"Loops de rodovia demais! Arquipélago não era simples", cor='red')
-                return False #arquipelago não era simples
+                return True #arquipelago não era simples
             self.remove_conexao(*rodovia)
             self.mostra_grafo(f"Removida a rodovia entre {rodovia[0]} e {rodovia[1]}")
-        return True
+            
+        # self.mostra_grafo("Arquipélago era simples!")
+        return False
 
     def era_simples(self) -> bool:
         """
@@ -112,23 +130,26 @@ class Arquipelago:
         em busca de loops. Caso haja loop de hidrovia ou mais loops de rodovia do que anos, retorna
         `False`. Caso contrário, retorna `True`
         """
-        # cehcando primeiro somente com hidrovias
+        self.pega_conexoes() # carrega dados do arquipelago
+        # checando primeiro somente com hidrovias
         if self.tem_loop():
             self.mostra_grafo(f"Há um loop de hidrovia! Arquipélago não era simples", cor='red')            
             return False
         else:
             # agora checa uma rodovia por vez
-            return self.checa_loop_de_rodovias()
+            self.mostra_grafo("Arquipélago era simples!")
+            return not self.tem_loop_de_rodovias()
     
-    def mostra_grafo(self, mensagem: str = "", cor: str = "blue") -> None:
-        """
-        Gera .png representando o grafo do arquipélago com todas as hidrovias e as 
-        rodovias adicionadas até então.
-        """
-        g = Graph(self.grafo)
-        draw(g, with_labels=True, node_color='skyblue')
-        plt.figtext(0.5, 0.01, mensagem, wrap=True, horizontalalignment='center', fontsize=12, color=cor)
-        plt.title(f"Anos: {self.anos}              Loops de rodovia encontrados: {self.n_loops}")
-        plt.savefig("meu_grafo.png", format="PNG", dpi=300, bbox_inches="tight")
-        plt.close()
-        input("ENTER para continuar")
+def mostra_grafo(self, mensagem: str = "", cor: str = "blue") -> None:
+    """
+    Gera .png representando o grafo do arquipélago com todas as hidrovias e as 
+    rodovias adicionadas até então.
+    Entrada: Uma mensagem em string que será mostrada no fundo do .png e o nome de uma cor em string.
+    """
+    g = Graph(self.grafo)
+    draw(g, with_labels=True, node_color='skyblue')
+    plt.figtext(0.5, 0.01, mensagem, wrap=True, horizontalalignment='center', fontsize=12, color=cor)
+    plt.title(f"Anos: {self.anos}              Loops de rodovia encontrados: {self.n_loops}")
+    plt.savefig("meu_grafo.png", format="PNG", dpi=300, bbox_inches="tight")
+    plt.close()
+    input("ENTER para continuar")
