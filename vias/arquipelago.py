@@ -26,7 +26,7 @@ class Arquipelago:
 
                     elif tipo_de_via == "r":
                         self.rodovias.add((v1, v2))
-                    else: 
+                    elause: 
                         raise ValueError
                 break
 
