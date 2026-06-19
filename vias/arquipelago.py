@@ -73,7 +73,7 @@ class Arquipelago:
         """
         for rodovia in self.rodovias:
             self.adiciona_conexao(*rodovia)
-            self.mostra_grafo(f"Adicionada a rodovia entre {rodovia[0]} e {rodovia[1]}")
+            self.mostra_grafo(f"Rodovia adicionada entre {rodovia[0]} e {rodovia[1]}")
 
             if not self.tem_loop():
                 continue # rodovia é mantida
@@ -83,7 +83,7 @@ class Arquipelago:
                 self.mostra_grafo(f"Loops de rodovia demais! Arquipélago não era simples", cor='red')
                 return True #arquipelago não era simples
             self.remove_conexao(*rodovia)
-            self.mostra_grafo(f"Removida a rodovia entre {rodovia[0]} e {rodovia[1]}")
+            self.mostra_grafo(f"Rodovia removida entre {rodovia[0]} e {rodovia[1]}")
             
         return False
 
@@ -148,16 +148,16 @@ class Arquipelago:
         self.grafo[v1].remove(v2)
         self.grafo[v2].remove(v1)
     
-def mostra_grafo(self, mensagem: str = "", cor: str = "blue") -> None:
-    """
-    Gera .png representando o grafo do arquipélago com todas as hidrovias e as 
-    rodovias adicionadas até então.
-    Entrada: Uma mensagem em string que será mostrada no fundo do .png e o nome de uma cor em string.
-    """
-    g = Graph(self.grafo)
-    draw(g, with_labels=True, node_color='skyblue')
-    plt.figtext(0.5, 0.01, mensagem, wrap=True, horizontalalignment='center', fontsize=12, color=cor)
-    plt.title(f"Anos: {self.anos}              Loops de rodovia encontrados: {self.n_loops}")
-    plt.savefig("meu_grafo.png", format="PNG", dpi=300, bbox_inches="tight")
-    plt.close()
-    input("ENTER para continuar")
+    def mostra_grafo(self, mensagem: str = "", cor: str = "blue") -> None:
+        """
+        Gera .png representando o grafo do arquipélago com todas as hidrovias e as 
+        rodovias adicionadas até então.
+        Entrada: Uma mensagem em string que será mostrada no fundo do .png e o nome de uma cor em string.
+        """
+        g = Graph(self.grafo)
+        draw(g, with_labels=True, node_color='skyblue')
+        plt.figtext(0.5, 0.01, mensagem, wrap=True, horizontalalignment='center', fontsize=12, color=cor)
+        plt.title(f"Anos: {self.anos}              Loops de rodovia encontrados: {self.n_loops}")
+        plt.savefig("meu_grafo.png", format="PNG", dpi=300, bbox_inches="tight")
+        plt.close()
+        input("ENTER para continuar")
