@@ -22,6 +22,21 @@ class Arquipelago:
         self.rodovias: set[tuple] = set()
         self.grafo: dict[str, set] = {}
         self.n_loops: int = 0
+
+    def era_simples(self) -> bool:
+        """
+        Verifica se arquipélago não tem loops de hidrovia e então checa as rodovias uma a uma
+        em busca de loops. Caso haja loop de hidrovia ou mais loops de rodovia do que anos, retorna
+        `False`. Caso contrário, retorna `True`
+        """
+        self.pega_conexoes() # carrega dados do arquipelago
+
+        if self.tem_loop(): # checando primeiro somente com hidrovias
+            self.mostra_grafo(f"Há um loop de hidrovia! Arquipélago não era simples", cor='red')            
+            return False
+        else:
+            # agora checa uma rodovia por vez
+            return not self.tem_loop_de_rodovias()
     
     def pega_conexoes(self) -> None:
         """
@@ -48,16 +63,29 @@ class Arquipelago:
             except KeyboardInterrupt:
                 exit("\nPrograma finalizado!")
 
-        self.mostra_grafo("Somente hidrovias")
-    
-    def pega_ponta(self, visitados: set[str]) -> str | None:
+        self.mostra_grafo("Somente hidrovias") # Gera PNG
+
+    def tem_loop_de_rodovias(self) -> bool:
         """
-        Retorna vertice que ainda não foi visitado. Caso não haja, retorna `None`.
+        Adiciona uma rodovia por vez e busca por algum laço no grafo a cada adição. Se encontrar laço, 
+        aumenta a contagem de laços em 1.\n
+        Saída: Se a contagem for maior que Q anos, retorna `False`, senão, `True`.
         """
-        for vertice in self.grafo:
-            if vertice not in visitados:
-                return vertice
-        return None
+        for rodovia in self.rodovias:
+            self.adiciona_conexao(*rodovia)
+            self.mostra_grafo(f"Adicionada a rodovia entre {rodovia[0]} e {rodovia[1]}")
+
+            if not self.tem_loop():
+                continue # rodovia é mantida
+            
+            self.n_loops += 1 #tem loop
+            if self.n_loops > self.anos: #verifica se nao cruzou o limite
+                self.mostra_grafo(f"Loops de rodovia demais! Arquipélago não era simples", cor='red')
+                return True #arquipelago não era simples
+            self.remove_conexao(*rodovia)
+            self.mostra_grafo(f"Removida a rodovia entre {rodovia[0]} e {rodovia[1]}")
+            
+        return False
 
     def tem_loop(self) -> bool:
         """
@@ -82,10 +110,24 @@ class Arquipelago:
                     else:
                         return True
         return False
+        
+    def pega_ponta(self, visitados: set[str]) -> str | None:
+        """
+        Busca vértice do grafo que ainda não foi visitado.\n
+        Entrada:
+            Conjunto de strings representando quais vértices já foram visitados
+        Saída:
+            Vértice que ainda não foi visitado. Caso não haja, retorna `None`.
+        """
+        for vertice in self.grafo:
+            if vertice not in visitados:
+                return vertice
+        return None
 
     def adiciona_conexao(self, v1: str, v2: str) -> None:
         """
-        Pega os dados da conexão fornecida e a introduz ao arquipélago.
+        Pega dois vértices e adiciona cada um ao conjunto correspondente do outro no grafo.
+        Entrada: Dois vértices do grafo, que são strings.
         """
         if self.grafo.get(v1, []):
             self.grafo[v1].add(v2)
@@ -98,47 +140,13 @@ class Arquipelago:
             self.grafo[v2]: set = {v1}
 
     def remove_conexao(self, v1: str, v2: str) -> None:
+        """
+        Pega dois vértices e exclui cada um do do conjunto correspondente do outro no grafo
+        Entrada:
+            Dois vértices do grafo, que são strings.
+        """
         self.grafo[v1].remove(v2)
         self.grafo[v2].remove(v1)
-
-    def tem_loop_de_rodovias(self) -> bool:
-        """
-        Adiciona uma rodovia por vez e busca por algum laço no grafo a cada adição. Se encontrar laço, 
-        aumenta a contagem de laços em 1.\n
-        Saída: Se a contagem for maior que Q anos, retorna `False`, senão, `True`.
-        """
-        for rodovia in self.rodovias:
-            self.adiciona_conexao(*rodovia)
-            self.mostra_grafo(f"Adicionada a rodovia entre {rodovia[0]} e {rodovia[1]}")
-
-            if not self.tem_loop():
-                continue # rodovia é mantida
-            
-            self.n_loops += 1 #tem loop
-            if self.n_loops > self.anos: #verifica se nao cruzou o limite
-                self.mostra_grafo(f"Loops de rodovia demais! Arquipélago não era simples", cor='red')
-                return True #arquipelago não era simples
-            self.remove_conexao(*rodovia)
-            self.mostra_grafo(f"Removida a rodovia entre {rodovia[0]} e {rodovia[1]}")
-            
-        # self.mostra_grafo("Arquipélago era simples!")
-        return False
-
-    def era_simples(self) -> bool:
-        """
-        Verifica se arquipélago não tem loops de hidrovia e então checa as rodovias uma a uma
-        em busca de loops. Caso haja loop de hidrovia ou mais loops de rodovia do que anos, retorna
-        `False`. Caso contrário, retorna `True`
-        """
-        self.pega_conexoes() # carrega dados do arquipelago
-        # checando primeiro somente com hidrovias
-        if self.tem_loop():
-            self.mostra_grafo(f"Há um loop de hidrovia! Arquipélago não era simples", cor='red')            
-            return False
-        else:
-            # agora checa uma rodovia por vez
-            self.mostra_grafo("Arquipélago era simples!")
-            return not self.tem_loop_de_rodovias()
     
 def mostra_grafo(self, mensagem: str = "", cor: str = "blue") -> None:
     """
