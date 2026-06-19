@@ -36,13 +36,18 @@ class Arquipelago:
             return False
         else:
             # agora checa uma rodovia por vez
-            return not self.tem_loop_de_rodovias()
+            if not self.tem_loop_de_rodovias():
+                self.mostra_grafo("Arquipélago era simples!", cor="darkgreen")
+                return True
+            else:
+                return False
     
     def pega_conexoes(self) -> None:
         """
         Pede ao usuário as conexões do arquipélago e as armazena no objeto `Arquipelago`. Rodovias são salvas
         em set exclusivo `self.rodovias` para serem verificadas uma a uma posteriormente.
         """
+        print("USO: <vértice 1> (texto) <vertice 2> (texto) <tipo de via> (r ou h) --- Ex: hospital mercado r")
         while True:
             try:
                 for _ in range(self.n_conexoes):
@@ -83,7 +88,7 @@ class Arquipelago:
                 self.mostra_grafo(f"Loops de rodovia demais! Arquipélago não era simples", cor='red')
                 return True #arquipelago não era simples
             self.remove_conexao(*rodovia)
-            self.mostra_grafo(f"Rodovia removida entre {rodovia[0]} e {rodovia[1]}")
+            self.mostra_grafo(f"Rodovia removida entre {rodovia[0]} e {rodovia[1]}", cor="#B58900")
             
         return False
 
@@ -161,3 +166,4 @@ class Arquipelago:
         plt.savefig("meu_grafo.png", format="PNG", dpi=300, bbox_inches="tight")
         plt.close()
         input("ENTER para continuar")
+        
