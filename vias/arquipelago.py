@@ -64,7 +64,7 @@ class Arquipelago:
                 break
 
             except ValueError:
-                print("Input inválido!")
+                exit("Input inválido!")
             except KeyboardInterrupt:
                 exit("\nPrograma finalizado!")
 
