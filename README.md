@@ -1,6 +1,6 @@
 <!-- CABEÇALHO -->
 <div align="center">
-  <img src="imagens/cabecalho.jpg" alt="Cabeçalho do Projeto" width="100%">
+  <img src="imagens/cabecalho_branco.jpg" alt="Cabeçalho do Projeto" width="100%">
 </div>
 
 # Arquipélago e vias
@@ -9,7 +9,7 @@ Visualize grafos e verifique se eles têm loops excessivos.
 
 ## 📸 Demo
 
-![Demo GIF](https://your-demo-link.com/demo.gif)  
+<video src="imagens/video_uso.mp4" controls width="600"></vid
 
 ## 📦 Instalação
 
@@ -72,9 +72,11 @@ O arquipélago não era simples!
 - Configuração de limites de laços rompiveis para parada do programa;
 - Visualização das execuções sobre o grafo.
 
-## 🐍 Versão do Python
+## 🐍 Versão do Python e módulos
 
-- Python 3.13.7
+- Python: 3.13.7
+- matplotlib: 3.11.0
+- networkx: 3.6.1
 
 ## 📄 Licença
 
@@ -88,24 +90,24 @@ Leia o arquivo `LICENSE` para mais detalhes.
 
 ## Desenvolvedor do Projeto
 
-| [<img loading="lazy" src="misc/fotopessoal.jpg" width=145><br><sub>Carlos Gabriel de Oliveira Campos</sub>](https://github.com/cg-oc) |
+| [<img loading="lazy" src="imagens/fotopessoal.jpg" width=145><br><sub>Carlos Gabriel de Oliveira Campos</sub>](https://github.com/cg-oc) |
 | :---: |
 Aluno do primeiro semestre de Ciência e Tecnologia, na Ilum Escola de Ciência
 
 ## 🎓 Professores
 
+**Prof. Dr. Daniel Roberto Cassar**
+- **Contato:** `daniel.cassar@ilum.cnpem.br`
+---
+**Prof. Dr. James Moraes de Almeida**
+- **Contato:** `james.almeida@ilum.cnpem.br`
+---
+**Prof. Dr. Leandro Nascimento Lemos**
+- **Contato:** `leandro.lemos@ilum.cnpem.br`
+---
 
-> **Prof. Dr. Leandro Nascimento Lemos**
-> * **Contato:** `leandro.lemos@ilum.cnpem.br`
----
-> **Prof. Dr. Daniel Roberto Cassar**
-> * **Contato:** `daniel.cassar@ilum.cnpem.br`
----
-> **Prof. Dr. James Moraes de Almeida**
-> * **Contato:** ` james.almeida@ilum.cnpem.br`
----
 
- 
+ A eles, todos os meus agradecimentos por enriquecerem minhas habilidades e meu raciocínio!
 
 <div align="center">
   <img src="imagens/rodape.jpg" alt="Cabeçalho do Projeto" width="100%">
