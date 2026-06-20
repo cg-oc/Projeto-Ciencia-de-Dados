@@ -1,11 +1,10 @@
-
 <div align="center">
   <img src="imagens/cabecalho_branco.jpg" alt="Cabeçalho do Projeto" width="100%">
 </div>
 
-# Arquipélago e vias
+# Arquipélago e Vias
 
-Visualize grafos e verifique se eles têm loops excessivos.
+O **Arquipélago e Vias** é um programa em Python para modelar um arquipélago como um grafo, no qual ilhas são vértices e vias são arestas. O programa diferencia rodovias rompíveis e hidrovias permanentes, visualiza a evolução do grafo e verifica se a configuração do arquipélago permanece simples ou apresenta ciclos excessivos.
 
 ## 📸 Demo
 
@@ -17,14 +16,14 @@ https://github.com/user-attachments/assets/957c8589-ccaf-4e79-b4db-7a86fe0ad8aa
 Clone o repositório e instale as dependências:
 
 ```bash
-git clone https://github.com/yourusername/project-name.git
-cd project-name
+git clone https://github.com/cg-oc/Projeto-Ciencia-de-Dados.git
+cd Projeto-Ciencia-de-Dados
 pip install -r requirements.txt
 ```
 
 ## Lógica e temática
 
-O arquivo ```juvias.ipynb``` explica o algoritmo desenvolvido a partir de seções do código, como a classe `Arquipelago`, seus métodos e suas lógicas.
+O arquivo ```juvias.ipynb``` explica o algoritmo desenvolvido a partir de seções do código, como a classe `Arquipelago`, seus métodos e a lógica utilizada.
 A temática dessa abordagem, baseada em ilhas de um arquipélago ligadas por rodovias e hidrovias, é inspirada em uma questão elaborada pela Olimpíada Brasileira
 de Informática [1].
 
@@ -36,24 +35,37 @@ Rode o programa:
 python vias.py
 ```
 
-Ou rode o **jupyter notebook** ```juvias.ipynb```.
+Ou rode o **Jupyter Notebook** ```juvias.ipynb```.
 
 
 ## Entrada
-- Dois inteiros: Número de coenxões e anos do período análise do arquipélago (N)
-- N vezes: vértice 1 e vértice 2 que serão conectados e o tipo de conexão - "r" para rodovia (rompível) e "h" para hidrovia (permanente).
+
+A entrada inicial contém dois inteiros:
+
+- `C`: número de conexões a serem cadastradas;
+- `A`: número de anos do período de análise.
+
+Em seguida, são informadas `C` conexões, cada uma contendo:
+
+- o nome do primeiro vértice;
+- o nome do segundo vértice;
+- o tipo de via:
+  - `r`: rodovia, considerada rompível;
+  - `h`: hidrovia, considerada permanente.
+  
 
 ## Saída
-- Atualização de um ```.PNG``` para visualizar o grafo correspondente em cada análise
+- Atualização de uma imagem `.png` para visualizar o grafo a cada etapa da análise;
 - Após todas as análises, imprime no terminal se o arquipélago era simples ou não.
 
 
 Exemplo de entrada/saída:
-
+- OBS: O prompt `ENTER para continuar` pausa a execução do programa e espera pelo usuário para atualizar a imagem `.png` do grafo.
+  
 ```bash
 $ python vias.py
-úmero de conexões, anos: 3 0 
-USO: <vértice 1> (texto) <vertice 2> (texto) <tipo de via> (r ou h) --- Ex: hospital mercado r
+Número de conexões, anos: 3 0 
+USO: <vértice 1> (texto) <vértice 2> (texto) <tipo de via> (r ou h) --- Ex: hospital mercado r
 vértice 1, vértice 2, tipo de via: casa faculdade r  
 vértice 1, vértice 2, tipo de via: faculdade mercado r
 vértice 1, vértice 2, tipo de via: mercado casa h
@@ -68,12 +80,12 @@ O arquipélago não era simples!
 <img loading="lazy" src="imagens/meu_grafo.jpg" width=450> 
 
 
-## ✨ Funções
+## ✨ Funcionalidades
 
-- Detecção de loops excessivos em grafos;
-- Distinção entre loops rompíveis e permanentes;
-- Configuração de limites de laços rompiveis para parada do programa;
-- Visualização das execuções sobre o grafo.
+- Detecção de ciclos excessivos em grafos;
+- Distinção entre conexões rompíveis e permanentes;
+- Configuração de limites de conexões rompíveis para parada do programa;
+- Visualização da evolução do grafo.
 
 ## 🐍 Versão do Python e módulos
 
@@ -89,7 +101,7 @@ Leia o arquivo `LICENSE` para mais detalhes.
 
 ## 📖 Referência
 
-1. Insipirado pela questão-problema [Hidrovias e Rodovias](https://olimpiada.ic.unicamp.br/static/extras/obi2025/provas/ProvaOBI2025_f3ps.pdf) de uma prova da Olimpíada Brasileira de Informática.
+1. Inspirado pela questão-problema [Hidrovias e Rodovias](https://olimpiada.ic.unicamp.br/static/extras/obi2025/provas/ProvaOBI2025_f3ps.pdf) de uma prova da Olimpíada Brasileira de Informática.
 
 ## Desenvolvedor do Projeto
 
