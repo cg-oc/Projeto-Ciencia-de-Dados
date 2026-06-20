@@ -1,6 +1,6 @@
 <!-- CABEÇALHO -->
 <div align="center">
-  <img src="misc/cabecalho.png" alt="Cabeçalho do Projeto" width="100%">
+  <img src="misc/cabecalho.jpg" alt="Cabeçalho do Projeto" width="100%">
 </div>
 
 # Arquipélago e vias
@@ -108,5 +108,5 @@ Aluno do primeiro semestre de Ciência e Tecnologia, na Ilum Escola de Ciência
  
 
 <div align="center">
-  <img src="misc/rodape.png" alt="Cabeçalho do Projeto" width="100%">
+  <img src="misc/rodape.jpg" alt="Cabeçalho do Projeto" width="100%">
 </div>
