@@ -23,7 +23,7 @@ pip install -r requirements.txt
 
 ## Temática
 
-Esse projeto baseia-se no tema de um povo fictício que habitava ilhas conectadas por rodovias e hidrovias. Leia o arquivo ```juvias.ipynb``` ou o texto-base do problema em [1] para situar-se no cenário.
+Esse projeto baseia-se no tema de um povo fictício que habitava ilhas conectadas por rodovias e hidrovias. Leia o arquivo ```juvias.ipynb``` ou o texto-base do problema em [1] para situar-se melhor.
 
 ## 🛠 Uso
 
@@ -106,7 +106,7 @@ Aluno do primeiro semestre de Ciência e Tecnologia, na Ilum Escola de Ciência
 ---
 
  
- 
+
 <div align="center">
   <img src="misc/rodape.png" alt="Cabeçalho do Projeto" width="100%">
 </div>
