@@ -62,7 +62,7 @@ O arquipélago não era simples!
 ```
 Última visualização gerada:
 
-<img loading="lazy" src="imagens/meu_grafo.png" width=450> 
+<img loading="lazy" src="imagens/meu_grafo.jpg" width=450> 
 
 
 ## ✨ Funções
