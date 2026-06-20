@@ -9,7 +9,7 @@ Visualize grafos e verifique se eles têm loops excessivos.
 
 ## 📸 Demo
 
-<video src="imagens/video_uso.mp4" controls width="600"></vid
+<video src="imagens/video_uso.mp4" controls width="600"></vid>
 
 ## 📦 Instalação
 
